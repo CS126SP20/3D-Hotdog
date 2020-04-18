@@ -9,6 +9,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/app/Window.h"
 #include "cinder/gl/gl.h"
+#include "cinder/ObjLoader.h"
 
 namespace myapp {
 using namespace ci;
@@ -39,11 +40,10 @@ void MyApp::draw() {
   shader->bind();
 
   cinder::gl::BatchRef myCubeRef;
-  ObjLoader loader( loadFile( "myPath/cube.obj" ) );
+  ObjLoader loader( loadFile( "/Users/angelaluo/CS-126/cinder_0.9.2_mac/my-projects/final-project-AngelaLuo49021/apps/Donut.obj" ) );
   myCubeRef = gl::Batch::create( loader, gl::getStockShader( gl::ShaderDef().color() ) );
   myCubeRef->draw();
-
-  gl::drawSphere( vec3(), 1.0f, 40);
+//  gl::drawSphere( vec3(), 1.0f, 40);
 //  gl::drawCube( vec3(), vec3( 2 ) );
 }
 
