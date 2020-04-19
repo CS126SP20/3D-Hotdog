@@ -10,6 +10,8 @@ namespace myapp {
 
 class MyApp : public cinder::app::App {
  public:
+  float kStep = .2;
+ public:
   MyApp();
   void setup() override;
   void update() override;
@@ -18,7 +20,7 @@ class MyApp : public cinder::app::App {
   void mouseWheel(cinder::app::MouseEvent) override;
 
  private:
-  int x, y, zoom;
+  float x, y, zoom;
 };
 
 }  // namespace myapp

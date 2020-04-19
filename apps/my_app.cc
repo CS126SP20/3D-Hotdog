@@ -40,36 +40,41 @@ void MyApp::draw() {
   shader->bind();
 
   cinder::gl::BatchRef myCubeRef;
-  ObjLoader loader( loadFile( "/Users/angelaluo/CS-126/cinder_0.9.2_mac/my-projects/final-project-AngelaLuo49021/apps/Donut.obj" ) );
-  myCubeRef = gl::Batch::create( loader, gl::getStockShader( gl::ShaderDef().color() ) );
-  myCubeRef->draw();
+//  ObjLoader loader( loadFile( "/Users/angelaluo/CS-126/cinder_0.9.2_mac/my-projects/final-project-AngelaLuo49021/apps/Donut.obj" ) );
+//  myCubeRef = gl::Batch::create( loader, gl::getStockShader( gl::ShaderDef().color() ) );
+//  myCubeRef->draw();
 //  gl::drawSphere( vec3(), 1.0f, 40);
-//  gl::drawCube( vec3(), vec3( 2 ) );
+  gl::drawCube( vec3(), vec3( 2 ) );
 }
 
 void MyApp::keyDown(KeyEvent event) {
   switch (event.getCode()) {
-    case KeyEvent::KEY_UP:
-    case KeyEvent::KEY_k:
-    case KeyEvent::KEY_w: {
-      zoom = zoom + 1;
+    case KeyEvent::KEY_UP: {
+      y = y + kStep;
       break;
     }
     case KeyEvent::KEY_DOWN: {
-      zoom = zoom - 1;
+      y = y - kStep;
       break;
     }
+    case KeyEvent::KEY_LEFT: {
+      x = x - kStep;
+      break;
+    }
+    case KeyEvent::KEY_RIGHT: {
+      x = x + kStep;
+      break;
+    }
+
   }
 }
 void MyApp::mouseWheel(MouseEvent event) {
   float direction = event.getWheelIncrement();
   if (direction > 0) {
-    zoom = zoom + 1;
+    zoom = zoom + kStep;
   } else if (direction < 0) {
-    zoom = zoom - 1;
+    zoom = zoom - kStep;
   }
-  std::cout << zoom;
-  std::cout << "\n";
 }
 
 }  // namespace myapp
