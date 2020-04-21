@@ -20,9 +20,9 @@ using cinder::app::KeyEvent;
 MyApp::MyApp() { }
 
 void MyApp::setup() {
-  x = 3;
-  y = 3;
-  zoom = 3;
+  x = 5;
+  y = 5;
+  zoom = 5;
 }
 
 void MyApp::update() { }
@@ -40,13 +40,17 @@ void MyApp::draw() {
   shader->bind();
 
   cinder::gl::BatchRef myCubeRef;
-//  ObjLoader loader( loadFile( "/Users/angelaluo/CS-126/cinder_0.9.2_mac/my-projects/final-project-AngelaLuo49021/apps/Donut.obj" ) );
-//  myCubeRef = gl::Batch::create( loader, gl::getStockShader( gl::ShaderDef().color() ) );
-//  myCubeRef->draw();
+  //TODO: Load in a blender object.
+  //http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
+  ObjLoader loader( loadFile( "/Users/angelaluo/CS-126/cinder_0.9.2_mac/my-projects/final-project-AngelaLuo49021/resources/cube.obj" ) );
+  myCubeRef = gl::Batch::create( loader, gl::getStockShader(gl::ShaderDef().color()) );
+  //gl::ShaderDef().color()
+  myCubeRef->draw();
 //  gl::drawSphere( vec3(), 1.0f, 40);
-  gl::drawCube( vec3(), vec3( 2 ) );
+//  gl::drawCube( vec3(), vec3( 2 ) );
 }
 
+//TODO: do circle calculations about the point 0, 0 so that the point it moves by will always make it rotate around the object probably create a seperate function to do the calculations like that.
 void MyApp::keyDown(KeyEvent event) {
   switch (event.getCode()) {
     case KeyEvent::KEY_UP: {
