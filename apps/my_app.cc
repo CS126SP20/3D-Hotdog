@@ -10,6 +10,7 @@
 #include "cinder/app/Window.h"
 #include "cinder/gl/gl.h"
 #include "cinder/ObjLoader.h"
+#include "mylibrary/ObjectLoader.h"
 
 namespace myapp {
 using namespace ci;
@@ -35,19 +36,20 @@ void MyApp::draw() {
   cam.lookAt( vec3( x, y, zoom), vec3( 0 ) );
   gl::setMatrices( cam );
 
-  auto lambert = gl::ShaderDef().lambert();
-  auto shader = gl::getStockShader( lambert );
-  shader->bind();
+//  auto lambert = gl::ShaderDef().lambert();
+//  auto shader = gl::getStockShader( lambert );
+//  shader->bind();
 
   cinder::gl::BatchRef myCubeRef;
   //TODO: Load in a blender object.
   //http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
-  ObjLoader loader( loadFile( "/Users/angelaluo/CS-126/cinder_0.9.2_mac/my-projects/final-project-AngelaLuo49021/resources/cube.obj" ) );
-  myCubeRef = gl::Batch::create( loader, gl::getStockShader(gl::ShaderDef().color()) );
-  //gl::ShaderDef().color()
-  myCubeRef->draw();
-//  gl::drawSphere( vec3(), 1.0f, 40);
-//  gl::drawCube( vec3(), vec3( 2 ) );
+//  ObjLoader loader( loadFile( "/Users/angelaluo/CS-126/cinder_0.9.2_mac/my-projects/final-project-AngelaLuo49021/resources/cube.obj" ), false );
+//  myCubeRef = gl::Batch::create( loader, gl::getStockShader(gl::ShaderDef().color()) );
+//  myCubeRef->draw();
+  mylibrary::ObjectLoader object_loader("/Users/angelaluo/CS-126/cinder_0.9.2_mac/my-projects/final-project-AngelaLuo49021/resources/cube.obj");
+  object_loader.readFile();
+  object_loader.processData();
+  glBufferData(GL_ARRAY_BUFFER, object_loader.vertices.size() * sizeof(glm::vec3), &object_loader.vertices[0], GL_STATIC_DRAW);
 }
 
 //TODO: do circle calculations about the point 0, 0 so that the point it moves by will always make it rotate around the object probably create a seperate function to do the calculations like that.
