@@ -10,7 +10,7 @@ namespace myapp {
 
 class MyApp : public cinder::app::App {
  public:
-  float kStep = .2;
+  float kStep = 1;
  public:
   MyApp();
   void setup() override;
