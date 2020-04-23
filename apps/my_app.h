@@ -23,6 +23,7 @@ struct Object {
 class MyApp : public cinder::app::App {
  public:
   float kStep = 1;
+  std::string kHotDog = "/Users/angelaluo/CS-126/cinder_0.9.2_mac/my-projects/final-project-AngelaLuo49021/resources/hotdog.obj";
  public:
   MyApp();
   void setup() override;
