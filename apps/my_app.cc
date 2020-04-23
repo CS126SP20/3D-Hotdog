@@ -23,7 +23,10 @@ using cinder::app::KeyEvent;
 MyApp::MyApp() { }
 
 void MyApp::setup() {
+  //set up gui
   ui::initialize();
+  cinder::gl::enableDepthWrite();
+  cinder::gl::enableDepthRead();
 
   //set Camera position
   x = 5;
@@ -32,7 +35,7 @@ void MyApp::setup() {
 
   //initial objects
   mObjects = {
-      { "Object0", Color( 0.34f, 0.78f, 1.0f ), vec3( 0 , 0 , 0)},
+      { "Object0", Color( 0.34f, 0.78f, 1.0f ), vec3( 0.0f , 0.0f , 0.0f)},
       { "Object1", Color( 1.0f, 0.0f, 0.36f ), vec3( 20.0f, 100.0f , 40.0f )},
       { "Object2", Color( 0.48f, 0.86f, 0.22f ), vec3( 100.0f, 350.0f , 80.0f )},
       { "Object3", Color( 1.0f, 0.53f, 0.0f ), vec3( 450.0f, 100.0f , 130.0f )}
@@ -90,10 +93,12 @@ void MyApp::update() {
 }
 
 void MyApp::draw() {
-  cinder::gl::enableDepthWrite();
-  cinder::gl::enableDepthRead();
+
+  //clear screen
   static float gray = 0.65f;
   gl::clear( ColorA::gray( gray ) );
+
+  //set up camera position
   CameraPersp cam;
   cam.lookAt( vec3( x, y, zoom), vec3( 0 ) );
   gl::setMatrices( cam );
@@ -102,29 +107,25 @@ void MyApp::draw() {
   auto lambert = gl::ShaderDef().lambert().color();
   auto shader = gl::getStockShader( lambert );
   shader->bind();
+
   //translate gives the position of the hotdog
   //Some syntax derived from:
   //https://mottosso.gitbooks.io/cinder/book/cinder/gl/Batch.html
-  gl::translate(vec3(0, 0, 0));
-  cinder::gl::BatchRef myCubeRef;
+//  gl::translate(vec3(0, 0, 0));
+//  cinder::gl::BatchRef myCubeRef;
   ObjLoader loader( loadFile( kHotDog) );
-  myCubeRef = gl::Batch::create( loader, shader);
-  gl::color(Color( 0.34f, 0.78f, 1.0f ));
-  myCubeRef->draw();
+//  myCubeRef = gl::Batch::create( loader, shader);
+//  gl::color(Color( 0.34f, 0.78f, 1.0f ));
+//  myCubeRef->draw();
 
-//  static float gray = 0.65f;
-//  gl::clear( ColorA::gray( gray ) );
-
-  // any widget added without a window will be added
-  // in the default "debug" window
-//  ui::DragFloat( "Gray", &gray, 0.01f, 0.0f, 1.0f );
-  // render our "objects"
+  // render the rest of the ingredients
   gl::ScopedBlendAlpha alphaBlending;
   for( auto object : mObjects ) {
     gl::color( object.mColor );
-    gl::drawSphere( object.getPosition(), object.mSize, 40 );
-//    gl::drawSolidCircle( object.getPosition(), object.mSize );
-//    gl::drawStringCentered( object.mName, vec2( ivec2( object.getPosition() ) ) - vec2( 0, 5 ), ColorA::black() );
+//    gl::drawSphere( object.getPosition(), object.mSize, 40 );
+    gl::scale(object.mSize/4, object.mSize / 8);
+    gl::translate(object.getPosition());
+    gl::Batch::create( loader, shader)->draw();
   }
 }
 
