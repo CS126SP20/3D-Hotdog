@@ -20,6 +20,11 @@ using namespace std;
 
 using cinder::app::KeyEvent;
 
+int kBun = 0;
+int kTypeSausage = 1;
+int kMustard = 2;
+int kRelish = 3;
+
 MyApp::MyApp() { }
 
 void MyApp::setup() {
@@ -35,10 +40,8 @@ void MyApp::setup() {
 
   //initial objects
   mObjects = {
-      { "Object0", Color( 0.34f, 0.78f, 1.0f ), vec3( 0.0f , 0.0f , 0.0f)},
-      { "Object1", Color( 1.0f, 0.0f, 0.36f ), vec3( 20.0f, 100.0f , 40.0f )},
-      { "Object2", Color( 0.48f, 0.86f, 0.22f ), vec3( 100.0f, 350.0f , 80.0f )},
-      { "Object3", Color( 1.0f, 0.53f, 0.0f ), vec3( 450.0f, 100.0f , 130.0f )}
+      { "Object0", Color( 0.34f, 0.78f, 1.0f ), vec3( 0.0f , 0.0f , 0.0f), 2, 1},
+      { "Object1", Color( 1.0f, 0.0f, 0.36f ), vec3( 20.0f, 100.0f , 40.0f), 2, 1},
   };
 }
 
@@ -53,7 +56,7 @@ void MyApp::update() {
     // add / remove buttons
     if( ui::Button( "Add" ) ) {
       static int objCount = mObjects.size();
-      mObjects.push_back( { "Object" + std::to_string( objCount++ ), Color::white(), vec3( 0.0f ) } );
+      mObjects.push_back( { "Object" + std::to_string( objCount++ ), Color::white(), vec3( 0.0f ), 2, 1 } );
       selection = &mObjects.back();
     }
     if( selection ) {
@@ -114,6 +117,7 @@ void MyApp::draw() {
 //  gl::translate(vec3(0, 0, 0));
 //  cinder::gl::BatchRef myCubeRef;
   ObjLoader loader( loadFile( kHotDog) );
+  ObjLoader sausage(loadFile(kSausage));
 //  myCubeRef = gl::Batch::create( loader, shader);
 //  gl::color(Color( 0.34f, 0.78f, 1.0f ));
 //  myCubeRef->draw();
@@ -122,10 +126,14 @@ void MyApp::draw() {
   gl::ScopedBlendAlpha alphaBlending;
   for( auto object : mObjects ) {
     gl::color( object.mColor );
-//    gl::drawSphere( object.getPosition(), object.mSize, 40 );
     gl::scale(object.mSize/4, object.mSize / 8);
     gl::translate(object.getPosition());
-    gl::Batch::create( loader, shader)->draw();
+
+    if (object.mType == kTypeSausage) {
+      gl::Batch::create(sausage, shader)->draw();
+    } else {
+      gl::Batch::create( loader, shader)->draw();
+    }
   }
 }
 
