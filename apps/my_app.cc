@@ -4,14 +4,15 @@
 
 #include <cinder/app/App.h>
 #include <cinder/app/Window.h>
+#include <mylibrary/ObjectInfo.h>
 
+#include "CinderImGui.h"
+#include "cinder/ObjLoader.h"
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/app/Window.h"
 #include "cinder/gl/gl.h"
-#include "cinder/ObjLoader.h"
-#include "CinderImGui.h"
-//TODO:
+// TODO:
 /**
  *
  * Moving object 0 makes everything move?
@@ -26,11 +27,6 @@ using namespace ci::app;
 using namespace std;
 
 using cinder::app::KeyEvent;
-
-int kTypeBun = 0;
-int kTypeSausage = 1;
-int kMustard = 2;
-int kRelish = 3;
 
 MyApp::MyApp() { }
 
@@ -117,18 +113,9 @@ void MyApp::draw() {
   auto lambert = gl::ShaderDef().lambert().color();
   auto shader = gl::getStockShader( lambert );
   shader->bind();
-
-  //translate gives the position of the hotdog
-  //Some syntax derived from:
-  //https://mottosso.gitbooks.io/cinder/book/cinder/gl/Batch.html
-//  gl::translate(vec3(0, 0, 0));
-//  cinder::gl::BatchRef myCubeRef;
   ObjLoader loader( loadFile( kHotDog) );
   ObjLoader sausage(loadFile(kSausage));
   ObjLoader bun(loadFile(kBun));
-//  myCubeRef = gl::Batch::create( loader, shader);
-//  gl::color(Color( 0.34f, 0.78f, 1.0f ));
-//  myCubeRef->draw();
 
   // render the rest of the ingredients
   gl::ScopedBlendAlpha alphaBlending;
@@ -136,9 +123,9 @@ void MyApp::draw() {
     gl::color( object.mColor );
 //    gl::scale(object.mSize/4, object.mSize / 8);
     gl::translate(object.getPosition());
-    if (object.mType == kTypeSausage) {
+    if (object.mType == mylibrary::kTypeSausage) {
       gl::Batch::create(sausage, shader)->draw();
-    } else if (object.mType == kTypeBun) {
+    } else if (object.mType == mylibrary::kTypeBun) {
       gl::Batch::create(bun, shader)->draw();
     }
   }
