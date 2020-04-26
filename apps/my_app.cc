@@ -27,6 +27,12 @@ using namespace ci::app;
 using namespace std;
 
 using cinder::app::KeyEvent;
+using mylibrary::ObjectInfo;
+
+int kTypeBun = 0;
+int kTypeSausage = 1;
+int kMustard = 2;
+int kRelish = 3;
 
 MyApp::MyApp() { }
 
@@ -40,32 +46,32 @@ void MyApp::setup() {
   x = 5;
   y = 5;
   zoom = 5;
-//.769f, 0.345f, .408f
-  //initial objects
-  mObjects = {
-      { "Object0", Color( .769f, .545f, 0.349f), vec3( 0.0f , 0.0f , 0.0f), 2, 0},
-      { "Object1", Color( .769f, 0.345f, .408f ), vec3( 0.0f, 0.0f , 0.0f), 2, 1},
-  };
+
+  ObjectInfo bun("bun", Color( .769f, .545f, 0.349f), vec3( 0.0f , 0.0f , 0.0f), 0);
+  ObjectInfo sausage("sausage", Color( .769f, 0.345f, .408f ), vec3( 0.0f , 0.0f , 0.0f), 1);
+  mObjects.push_back(bun);
+  mObjects.push_back(sausage);
 }
 
 void MyApp::update() {
 
 
   // Our List / Object selector
-  static const Object* selection = &mObjects[1];
+  static const ObjectInfo* selection = &mObjects[1];
   {
     ui::ScopedWindow window( "Ingredients" );
 
     // add / remove buttons
     if( ui::Button( "Add" ) ) {
       static int objCount = mObjects.size();
-      mObjects.push_back( { "Object" + std::to_string( objCount++ ), Color::white(), vec3( 0.0f ), 2, 1 } );
+      ObjectInfo new_object;
+      mObjects.push_back(new_object);
       selection = &mObjects.back();
     }
     if( selection ) {
       ui::SameLine();
       if( ui::Button( "Remove" ) ) {
-        auto it = std::find_if( mObjects.begin(), mObjects.end(), [] ( const Object& obj ) { return &obj == selection; } );
+        auto it = std::find_if( mObjects.begin(), mObjects.end(), [] ( const ObjectInfo& obj ) { return &obj == selection; } );
         if( it != mObjects.end() ) {
           mObjects.erase( it );
           selection = nullptr;
@@ -123,9 +129,9 @@ void MyApp::draw() {
     gl::color( object.mColor );
 //    gl::scale(object.mSize/4, object.mSize / 8);
     gl::translate(object.getPosition());
-    if (object.mType == mylibrary::kTypeSausage) {
+    if (object.mType == kTypeSausage) {
       gl::Batch::create(sausage, shader)->draw();
-    } else if (object.mType == mylibrary::kTypeBun) {
+    } else if (object.mType == kTypeBun) {
       gl::Batch::create(bun, shader)->draw();
     }
   }

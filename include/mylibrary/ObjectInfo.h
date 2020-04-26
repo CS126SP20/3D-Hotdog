@@ -10,10 +10,6 @@
 #include <string>
 #include <vector>
 namespace mylibrary {
-int kTypeBun = 0;
-int kTypeSausage = 1;
-int kMustard = 2;
-int kRelish = 3;
 class ObjectInfo {
  public:
   ObjectInfo(std::string name, cinder::Color color, cinder::vec3 position, int type);

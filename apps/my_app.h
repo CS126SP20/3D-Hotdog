@@ -4,23 +4,11 @@
 #define FINALPROJECT_APPS_MYAPP_H_
 
 #include <cinder/app/App.h>
+#include <mylibrary/ObjectInfo.h>
 
 #include <glm/vec2.hpp>
 
 namespace myapp {
-
-struct Object {
-
-  cinder::vec3 getPosition() const { return mPosition; }
-  void setPosition( const ci::vec3 & position ) { mPosition = position; }
-
-  std::string	mName;
-  cinder::Color	mColor;
-  cinder::vec3	mPosition;
-  float	mSize;
-  int mType;
-
-};
 
 class MyApp : public cinder::app::App {
  public:
@@ -38,7 +26,7 @@ class MyApp : public cinder::app::App {
 
  private:
   float x, y, zoom;
-  std::vector<Object>mObjects;
+  std::vector<mylibrary::ObjectInfo>mObjects;
 };
 
 }  // namespace myapp
