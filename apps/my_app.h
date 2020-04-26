@@ -3,10 +3,14 @@
 #ifndef FINALPROJECT_APPS_MYAPP_H_
 #define FINALPROJECT_APPS_MYAPP_H_
 
+#include <cinder/ObjLoader.h>
 #include <cinder/app/App.h>
 #include <mylibrary/ObjectInfo.h>
+#include "cinder/gl/gl.h"
 
 #include <glm/vec2.hpp>
+
+#include "cinder/ObjLoader.h"
 
 namespace myapp {
 

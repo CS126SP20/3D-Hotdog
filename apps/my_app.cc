@@ -47,10 +47,10 @@ void MyApp::setup() {
   vert = 5;
   radi = 5;
 
-  ObjectInfo bun("bun", Color( .769f, .545f, 0.349f), vec3( 0.0f , 0.0f , 0.0f), 0);
-  ObjectInfo sausage("sausage", Color( .769f, 0.345f, .408f ), vec3( 0.0f , 0.0f , 0.0f), 1);
-  mObjects.push_back(bun);
-  mObjects.push_back(sausage);
+  ObjectInfo init_bun("bun", Color( .769f, .545f, 0.349f), vec3( 0.0f , 0.0f , 0.0f), 0);
+  ObjectInfo init_sausage("sausage", Color( .769f, 0.345f, .408f ), vec3( 0.0f , 0.0f , 0.0f), 1);
+  mObjects.push_back(init_bun);
+  mObjects.push_back(init_sausage);
 }
 
 void MyApp::update() {
@@ -101,6 +101,10 @@ void MyApp::update() {
     vec3 pos = object->getPosition();
     if( ui::DragFloat3( "Position", &pos[0] ) ) object->setPosition( pos );
 //    ui::DragFloat( "Size", &object->mSize );
+    ui::RadioButton("Bun", &object->mType, 0);
+    ui::RadioButton("Sausage", &object->mType, 1);
+    ui::RadioButton("Relish", &object->mType, 2);
+    ui::RadioButton("Mustard", &object->mType, 3);
   }
 }
 
@@ -110,20 +114,21 @@ void MyApp::draw() {
   static float gray = 0.65f;
   gl::clear( ColorA::gray( gray ) );
 
+  //load files (unable to set variables outside of draw)
+  cinder::ObjLoader sausage(loadFile(kSausage));
+  cinder::ObjLoader bun(loadFile(kBun));
+
   //set up camera position
   CameraPersp cam;
   cam.lookAt( vec3(radi, vert, horz), vec3( 0 ) );
   gl::setMatrices( cam );
 
-  gl::color(Color( 0.34f, 0.78f, 1.0f ));
+  //set up shading
   auto lambert = gl::ShaderDef().lambert().color();
   auto shader = gl::getStockShader( lambert );
   shader->bind();
-  ObjLoader loader( loadFile( kHotDog) );
-  ObjLoader sausage(loadFile(kSausage));
-  ObjLoader bun(loadFile(kBun));
 
-  // render the rest of the ingredients
+  // render all ingredients
   gl::ScopedBlendAlpha alphaBlending;
   for( auto object : mObjects ) {
     gl::color( object.mColor );
