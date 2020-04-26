@@ -31,7 +31,7 @@ using mylibrary::ObjectInfo;
 
 int kTypeBun = 0;
 int kTypeSausage = 1;
-int kMustard = 2;
+int kTypeMustard = 2;
 int kRelish = 3;
 
 MyApp::MyApp() { }
@@ -103,8 +103,8 @@ void MyApp::update() {
 //    ui::DragFloat( "Size", &object->mSize );
     ui::RadioButton("Bun", &object->mType, 0);
     ui::RadioButton("Sausage", &object->mType, 1);
-    ui::RadioButton("Relish", &object->mType, 2);
-    ui::RadioButton("Mustard", &object->mType, 3);
+    ui::RadioButton("Mustard", &object->mType, 2);
+    ui::RadioButton("Relish", &object->mType, 3);
   }
 }
 
@@ -117,6 +117,7 @@ void MyApp::draw() {
   //load files (unable to set variables outside of draw)
   cinder::ObjLoader sausage(loadFile(kSausage));
   cinder::ObjLoader bun(loadFile(kBun));
+  cinder::ObjLoader mustard(loadFile(kMustard));
 
   //set up camera position
   CameraPersp cam;
@@ -138,6 +139,8 @@ void MyApp::draw() {
       gl::Batch::create(sausage, shader)->draw();
     } else if (object.mType == kTypeBun) {
       gl::Batch::create(bun, shader)->draw();
+    } else if (object.mType == kTypeMustard) {
+      gl::Batch::create(mustard, shader)->draw();
     }
   }
 }
