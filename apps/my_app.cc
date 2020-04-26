@@ -11,7 +11,14 @@
 #include "cinder/gl/gl.h"
 #include "cinder/ObjLoader.h"
 #include "CinderImGui.h"
-
+//TODO:
+/**
+ *
+ * Moving object 0 makes everything move?
+ * add better key navigation
+ * change colors on hotdog and toppings
+ * add option for resizing.
+ */
 
 namespace myapp {
 using namespace ci;
@@ -20,7 +27,7 @@ using namespace std;
 
 using cinder::app::KeyEvent;
 
-int kBun = 0;
+int kTypeBun = 0;
 int kTypeSausage = 1;
 int kMustard = 2;
 int kRelish = 3;
@@ -37,11 +44,11 @@ void MyApp::setup() {
   x = 5;
   y = 5;
   zoom = 5;
-
+//.769f, 0.345f, .408f
   //initial objects
   mObjects = {
-      { "Object0", Color( 0.34f, 0.78f, 1.0f ), vec3( 0.0f , 0.0f , 0.0f), 2, 1},
-      { "Object1", Color( 1.0f, 0.0f, 0.36f ), vec3( 20.0f, 100.0f , 40.0f), 2, 1},
+      { "Object0", Color( .769f, .545f, 0.349f), vec3( 0.0f , 0.0f , 0.0f), 2, 0},
+      { "Object1", Color( .769f, 0.345f, .408f ), vec3( 0.0f, 0.0f , 0.0f), 2, 1},
   };
 }
 
@@ -103,7 +110,7 @@ void MyApp::draw() {
 
   //set up camera position
   CameraPersp cam;
-  cam.lookAt( vec3( x, y, zoom), vec3( 0 ) );
+  cam.lookAt( vec3( zoom, y, x), vec3( 0 ) );
   gl::setMatrices( cam );
 
   gl::color(Color( 0.34f, 0.78f, 1.0f ));
@@ -118,6 +125,7 @@ void MyApp::draw() {
 //  cinder::gl::BatchRef myCubeRef;
   ObjLoader loader( loadFile( kHotDog) );
   ObjLoader sausage(loadFile(kSausage));
+  ObjLoader bun(loadFile(kBun));
 //  myCubeRef = gl::Batch::create( loader, shader);
 //  gl::color(Color( 0.34f, 0.78f, 1.0f ));
 //  myCubeRef->draw();
@@ -126,13 +134,12 @@ void MyApp::draw() {
   gl::ScopedBlendAlpha alphaBlending;
   for( auto object : mObjects ) {
     gl::color( object.mColor );
-    gl::scale(object.mSize/4, object.mSize / 8);
+//    gl::scale(object.mSize/4, object.mSize / 8);
     gl::translate(object.getPosition());
-
     if (object.mType == kTypeSausage) {
       gl::Batch::create(sausage, shader)->draw();
-    } else {
-      gl::Batch::create( loader, shader)->draw();
+    } else if (object.mType == kTypeBun) {
+      gl::Batch::create(bun, shader)->draw();
     }
   }
 }
