@@ -25,7 +25,7 @@ class MyApp : public cinder::app::App {
   void mouseWheel(cinder::app::MouseEvent) override;
 
  private:
-  float x, y, zoom;
+  float horz, vert, radi;
   std::vector<mylibrary::ObjectInfo>mObjects;
 };
 

@@ -43,9 +43,9 @@ void MyApp::setup() {
   cinder::gl::enableDepthRead();
 
   //set Camera position
-  x = 5;
-  y = 5;
-  zoom = 5;
+  horz = 5;
+  vert = 5;
+  radi = 5;
 
   ObjectInfo bun("bun", Color( .769f, .545f, 0.349f), vec3( 0.0f , 0.0f , 0.0f), 0);
   ObjectInfo sausage("sausage", Color( .769f, 0.345f, .408f ), vec3( 0.0f , 0.0f , 0.0f), 1);
@@ -94,13 +94,13 @@ void MyApp::update() {
   if( selection != nullptr ) {
     ui::ScopedWindow window( "Inspector" );
 
-    Object* object = (Object*) selection;
+    ObjectInfo* object = (ObjectInfo*) selection;
     ui::InputText( "Name", &object->mName );
     ui::ColorEdit3( "Color", &object->mColor[0] );
     // getter/setters are a bit longer but still possible
     vec3 pos = object->getPosition();
     if( ui::DragFloat3( "Position", &pos[0] ) ) object->setPosition( pos );
-    ui::DragFloat( "Size", &object->mSize );
+//    ui::DragFloat( "Size", &object->mSize );
   }
 }
 
@@ -112,7 +112,7 @@ void MyApp::draw() {
 
   //set up camera position
   CameraPersp cam;
-  cam.lookAt( vec3( zoom, y, x), vec3( 0 ) );
+  cam.lookAt( vec3(radi, vert, horz), vec3( 0 ) );
   gl::setMatrices( cam );
 
   gl::color(Color( 0.34f, 0.78f, 1.0f ));
@@ -137,23 +137,22 @@ void MyApp::draw() {
   }
 }
 
-//TODO: do circle calculations about the point 0, 0 so that the point it moves by will always make it rotate around the object probably create a seperate function to do the calculations like that.
 void MyApp::keyDown(KeyEvent event) {
   switch (event.getCode()) {
     case KeyEvent::KEY_UP: {
-      y = y + kStep;
+      vert = vert + kStep;
       break;
     }
     case KeyEvent::KEY_DOWN: {
-      y = y - kStep;
+      vert = vert - kStep;
       break;
     }
     case KeyEvent::KEY_LEFT: {
-      x = x - kStep;
+      horz = horz - kStep;
       break;
     }
     case KeyEvent::KEY_RIGHT: {
-      x = x + kStep;
+      horz = horz + kStep;
       break;
     }
 
@@ -162,9 +161,9 @@ void MyApp::keyDown(KeyEvent event) {
 void MyApp::mouseWheel(MouseEvent event) {
   float direction = event.getWheelIncrement();
   if (direction > 0) {
-    zoom = zoom + kStep;
+    radi = radi + kStep;
   } else if (direction < 0) {
-    zoom = zoom - kStep;
+    radi = radi - kStep;
   }
 }
 
