@@ -1,4 +1,12 @@
 # Development
 April 23, 2020:
 Added objects and functionality to move them with imgui.
+
+April 28, 2020:
+Added in relish and mustard. Also have a seperate hotdog and bun. Seperated the objects into their own classes 
+for organization and modulization. The objects can also now have name changes and ingredient type changes
+which will make it even easier for customization. 
+Also I updated the navigation to flow better. Before there were some key controls that were incorrect and
+made the application difficult to navigate. Also since the ingredients can be moved to new locations, 
+I decided circumnavigating (0,0,0) would not be the best idea. 
 ---
