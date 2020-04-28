@@ -32,7 +32,7 @@ using mylibrary::ObjectInfo;
 int kTypeBun = 0;
 int kTypeSausage = 1;
 int kTypeMustard = 2;
-int kRelish = 3;
+int kTypeRelish = 3;
 
 MyApp::MyApp() { }
 
@@ -118,6 +118,7 @@ void MyApp::draw() {
   cinder::ObjLoader sausage(loadFile(kSausage));
   cinder::ObjLoader bun(loadFile(kBun));
   cinder::ObjLoader mustard(loadFile(kMustard));
+  cinder::ObjLoader relish(loadFile(kRelish));
 
   //set up camera position
   CameraPersp cam;
@@ -141,6 +142,8 @@ void MyApp::draw() {
       gl::Batch::create(bun, shader)->draw();
     } else if (object.mType == kTypeMustard) {
       gl::Batch::create(mustard, shader)->draw();
+    } else if (object.mType == kTypeRelish) {
+      gl::Batch::create(relish, shader)->draw();
     }
   }
 }
