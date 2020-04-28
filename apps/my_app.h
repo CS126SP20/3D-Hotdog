@@ -29,10 +29,12 @@ class MyApp : public cinder::app::App {
   void draw() override;
   void keyDown(cinder::app::KeyEvent) override;
   void mouseWheel(cinder::app::MouseEvent) override;
+  void mouseDown(cinder::app::MouseEvent) override;
 
  private:
   float horz, vert, radi;
   std::vector<mylibrary::ObjectInfo>mObjects;
+  cinder::vec2 perspective;
 };
 
 }  // namespace myapp

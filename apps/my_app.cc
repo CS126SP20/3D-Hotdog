@@ -100,7 +100,9 @@ void MyApp::update() {
     // getter/setters are a bit longer but still possible
     vec3 pos = object->getPosition();
     if( ui::DragFloat3( "Position", &pos[0] ) ) object->setPosition( pos );
-//    ui::DragFloat( "Size", &object->mSize );
+    //ui::DragFloat( "Size", &object->mSize );
+    ui::DragFloat( "Perspective X", &perspective.g);
+    ui::DragFloat( "Perspective Y", &perspective.r);
     ui::RadioButton("Bun", &object->mType, 0);
     ui::RadioButton("Sausage", &object->mType, 1);
     ui::RadioButton("Mustard", &object->mType, 2);
@@ -122,7 +124,7 @@ void MyApp::draw() {
 
   //set up camera position
   CameraPersp cam;
-  cam.lookAt( vec3(radi, vert, horz), vec3( 0 ) );
+  cam.lookAt( vec3(radi, vert, horz), vec3( perspective[0], perspective[1], 0 ) );
   gl::setMatrices( cam );
 
   //set up shading
@@ -146,6 +148,7 @@ void MyApp::draw() {
       gl::Batch::create(relish, shader)->draw();
     }
   }
+
 }
 
 void MyApp::keyDown(KeyEvent event) {
@@ -176,6 +179,11 @@ void MyApp::mouseWheel(MouseEvent event) {
   } else if (direction < 0) {
     radi = radi - kStep;
   }
+}
+
+void MyApp::mouseDown(MouseEvent event) {
+  vec2 pos = MyApp::getMousePos();
+  perspective = pos;
 }
 
 }  // namespace myapp
