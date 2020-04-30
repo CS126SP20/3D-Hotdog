@@ -47,6 +47,11 @@ void MyApp::setup() {
   vert = 5;
   radi = 5;
 
+  //set up background color
+  bgR = .765f;
+  bgG = .545f;
+  bgB = .408f;
+
   ObjectInfo init_bun("bun", Color( .769f, .545f, 0.349f), vec3( 0.0f , 0.0f , 0.0f), 0);
   ObjectInfo init_sausage("sausage", Color( .769f, 0.345f, .408f ), vec3( 0.0f , 0.0f , 0.0f), 1);
   mObjects.push_back(init_bun);
@@ -113,8 +118,7 @@ void MyApp::update() {
 void MyApp::draw() {
 
   //clear screen
-  static float gray = 0.65f;
-  gl::clear( ColorA::gray( gray ) );
+  gl::clear( Color( bgR, bgG, bgB ) );
 
   //load files (unable to set variables outside of draw)
   cinder::ObjLoader sausage(loadFile(kSausage));
@@ -122,15 +126,17 @@ void MyApp::draw() {
   cinder::ObjLoader mustard(loadFile(kMustard));
   cinder::ObjLoader relish(loadFile(kRelish));
 
+
   //set up camera position
   CameraPersp cam;
-  cam.lookAt( vec3(radi, vert, horz), vec3( perspective[0], perspective[1], 0 ) );
+  cam.lookAt( vec3(radi, vert, horz), vec3( perspective[0] / 2, perspective[1] / 2, 0 ) );
   gl::setMatrices( cam );
 
   //set up shading
   auto lambert = gl::ShaderDef().lambert().color();
   auto shader = gl::getStockShader( lambert );
   shader->bind();
+
 
   // render all ingredients
   gl::ScopedBlendAlpha alphaBlending;
@@ -182,8 +188,8 @@ void MyApp::mouseWheel(MouseEvent event) {
 }
 
 void MyApp::mouseDown(MouseEvent event) {
-  vec2 pos = MyApp::getMousePos();
-  perspective = pos;
+  bgR = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+  bgG = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+  bgB = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 }
-
 }  // namespace myapp

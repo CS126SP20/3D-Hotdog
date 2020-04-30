@@ -35,6 +35,7 @@ class MyApp : public cinder::app::App {
   float horz, vert, radi;
   std::vector<mylibrary::ObjectInfo>mObjects;
   cinder::vec2 perspective;
+  float bgR, bgG, bgB;
 };
 
 }  // namespace myapp
