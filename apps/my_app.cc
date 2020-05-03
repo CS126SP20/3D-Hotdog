@@ -58,7 +58,6 @@ void MyApp::setup() {
   ObjectInfo init_sausage("sausage", Color( .769f, 0.345f, .408f ), vec3( 0.0f , 0.0f , 0.0f), 1);
   mObjects.push_back(init_bun);
   mObjects.push_back(init_sausage);
-
   last_time_ = std::chrono::system_clock::now();
 }
 
@@ -109,9 +108,6 @@ void MyApp::update() {
     // getter/setters are a bit longer but still possible
     vec3 pos = object->getPosition();
     if( ui::DragFloat3( "Position", &pos[0] ) ) object->setPosition( pos );
-    //ui::DragFloat( "Size", &object->mSize );
-    ui::DragFloat( "Perspective X", &perspective.g);
-    ui::DragFloat( "Perspective Y", &perspective.r);
     ui::RadioButton("Bun", &object->mType, 0);
     ui::RadioButton("Sausage", &object->mType, 1);
     ui::RadioButton("Mustard", &object->mType, 2);
@@ -120,8 +116,19 @@ void MyApp::update() {
 
   //drop special item
   if (time - last_time_ > std::chrono::seconds(kTimeGap)) {
-    std::cout<< "special ingredient";
+    last_drop_time_ = std::chrono::system_clock::now();
     last_time_ = time;
+    item_dropper_.reset();
+    item_dropper_.shouldDrop = true;
+  }
+  //change positions every couple milliseconds
+  if (item_dropper_.shouldDrop && time - last_drop_time_ > std::chrono::milliseconds(kTimeGap)) {
+    item_dropper_.dropDown();
+    //check location of item relative to the most recent object
+    //this allows the player to move their object to other places and still have item drops happen
+    if (item_dropper_.position[1] < mObjects[0].getPosition()[1] - 20) {
+      item_dropper_.shouldDrop = false;
+    }
   }
 
 }
@@ -165,7 +172,20 @@ void MyApp::draw() {
   }
 
   //draw special item if needed
+  if (item_dropper_.shouldDrop) {
+    drawDropDown();
+  }
 
+}
+void MyApp::drawDropDown() {
+  auto lambert = gl::ShaderDef().lambert().color();
+  auto shader = gl::getStockShader( lambert );
+  shader->bind();
+
+  cinder::ObjLoader relish(loadFile(kRelish));
+  gl::color(Color( .769f, .545f, 0.349f));
+  gl::translate(item_dropper_.position);
+  gl::Batch::create(relish, shader)->draw();
 }
 
 void MyApp::keyDown(KeyEvent event) {

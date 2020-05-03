@@ -6,6 +6,7 @@
 #include <cinder/ObjLoader.h>
 #include <cinder/app/App.h>
 #include <mylibrary/ObjectInfo.h>
+#include <mylibrary/ItemDropper.h>
 #include "cinder/gl/gl.h"
 
 #include <glm/vec2.hpp>
@@ -27,6 +28,7 @@ class MyApp : public cinder::app::App {
   void setup() override;
   void update() override;
   void draw() override;
+  void drawDropDown();
   void keyDown(cinder::app::KeyEvent) override;
   void mouseWheel(cinder::app::MouseEvent) override;
   void mouseDown(cinder::app::MouseEvent) override;
@@ -37,6 +39,8 @@ class MyApp : public cinder::app::App {
   cinder::vec2 perspective;
   float bgR, bgG, bgB;
   std::chrono::time_point<std::chrono::system_clock> last_time_;
+  std::chrono::time_point<std::chrono::system_clock> last_drop_time_;
+  mylibrary::ItemDropper item_dropper_;
 };
 
 }  // namespace myapp

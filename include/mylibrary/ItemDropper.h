@@ -12,7 +12,9 @@
  * Implementation plan:
  * the item will drop, and take in the position of Object 0 as the one it compares itself to
  * If it is within 10 of object 0 in the z direction (horizontal), then it will stop one above the y direction (vertical)
+ *        in this case, add it to the object list
  * Otherwise, it will disappear if the y (vertical) coordinate is below the object 0 y coordinate
+ *          dont add it to the object list
  * If it is not, then it will continue to drop down.
  *
  * Track the position of the item dropper
@@ -21,11 +23,11 @@
 namespace mylibrary {
 class ItemDropper {
  public:
+  bool shouldDrop;
   ItemDropper();
-  bool shouldDropItem;
   void dropDown();
-
- private:
+  void reset();
   cinder::vec3 position;
+
 };
 }
