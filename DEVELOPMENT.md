@@ -17,5 +17,8 @@ Plans for the next week:
 Add special feature toppings that a player can't manually add. The toppings will fall
 from the sky and the player needs to move the whole hot dog to "catch" them. 
 
+May 2, 2020: Created an item dropper class and implemented the items to drop after a certain amount
+of seconds and also made the drop rate a constant. Currently the items drop relative to the y positions of the
+hot dog. 
 
 ---
