@@ -9,6 +9,7 @@ include("${FinalProject_SOURCE_DIR}/cmake/make_cinder_library.cmake")
 
 file(GLOB SOURCE_LIST CONFIGURE_DEPENDS
         "${FinalProject_SOURCE_DIR}/src/*.h"
+        "${FinalProject_SOURCE_DIR}/include/mylibrary/*.h"
         "${FinalProject_SOURCE_DIR}/src/*.hpp"
         "${FinalProject_SOURCE_DIR}/src/*.cc"
         "${FinalProject_SOURCE_DIR}/src/*.cpp")

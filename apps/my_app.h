@@ -36,6 +36,7 @@ class MyApp : public cinder::app::App {
   std::vector<mylibrary::ObjectInfo>mObjects;
   cinder::vec2 perspective;
   float bgR, bgG, bgB;
+  std::chrono::time_point<std::chrono::system_clock> last_time_;
 };
 
 }  // namespace myapp

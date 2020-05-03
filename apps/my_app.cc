@@ -34,6 +34,8 @@ int kTypeSausage = 1;
 int kTypeMustard = 2;
 int kTypeRelish = 3;
 
+int kTimeGap = 5;
+
 MyApp::MyApp() { }
 
 void MyApp::setup() {
@@ -56,10 +58,12 @@ void MyApp::setup() {
   ObjectInfo init_sausage("sausage", Color( .769f, 0.345f, .408f ), vec3( 0.0f , 0.0f , 0.0f), 1);
   mObjects.push_back(init_bun);
   mObjects.push_back(init_sausage);
+
+  last_time_ = std::chrono::system_clock::now();
 }
 
 void MyApp::update() {
-
+  const auto time = std::chrono::system_clock::now();
 
   // Our List / Object selector
   static const ObjectInfo* selection = &mObjects[1];
@@ -113,10 +117,16 @@ void MyApp::update() {
     ui::RadioButton("Mustard", &object->mType, 2);
     ui::RadioButton("Relish", &object->mType, 3);
   }
+
+  //drop special item
+  if (time - last_time_ > std::chrono::seconds(kTimeGap)) {
+    std::cout<< "special ingredient";
+    last_time_ = time;
+  }
+
 }
 
 void MyApp::draw() {
-
   //clear screen
   gl::clear( Color( bgR, bgG, bgB ) );
 
@@ -129,7 +139,7 @@ void MyApp::draw() {
 
   //set up camera position
   CameraPersp cam;
-  cam.lookAt( vec3(radi, vert, horz), vec3( perspective[0] / 2, perspective[1] / 2, 0 ) );
+  cam.lookAt( vec3(radi, vert, horz), vec3( 0, 0, 0 ) );
   gl::setMatrices( cam );
 
   //set up shading
@@ -142,7 +152,6 @@ void MyApp::draw() {
   gl::ScopedBlendAlpha alphaBlending;
   for( auto object : mObjects ) {
     gl::color( object.mColor );
-//    gl::scale(object.mSize/4, object.mSize / 8);
     gl::translate(object.getPosition());
     if (object.mType == kTypeSausage) {
       gl::Batch::create(sausage, shader)->draw();
@@ -154,6 +163,8 @@ void MyApp::draw() {
       gl::Batch::create(relish, shader)->draw();
     }
   }
+
+  //draw special item if needed
 
 }
 
