@@ -13,4 +13,7 @@ namespace mylibrary {
   ItemDropper::ItemDropper() {
     position = cinder::vec3(0, 5, 0);
   }
+  void ItemDropper::dropDown() {
+    position[1] = position[1] - 1;
+  }
 }
