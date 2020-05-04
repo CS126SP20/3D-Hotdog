@@ -35,7 +35,9 @@ int kTypeMustard = 2;
 int kTypeRelish = 3;
 int kTypeSpecial = 4;
 
-int kTimeGap = 5;
+int kTimeGap = 15;
+int kDropGap = 20;
+Color kBlackColor( .769f, .545f, 0.349f);
 
 MyApp::MyApp() { }
 
@@ -51,9 +53,9 @@ void MyApp::setup() {
   radi = 5;
 
   //set up background color
-  bgR = .765f;
-  bgG = .545f;
-  bgB = .408f;
+  bgR = .78f;
+  bgG = .3f;
+  bgB = .3f;
 
   ObjectInfo init_bun("bun", Color( .769f, .545f, 0.349f), vec3( 0.0f , 0.0f , 0.0f), 0);
   ObjectInfo init_sausage("sausage", Color( .769f, 0.345f, .408f ), vec3( 0.0f , 0.0f , 0.0f), 1);
@@ -98,6 +100,14 @@ void MyApp::update() {
     }
     ui::ListBoxFooter();
   }
+  {
+    ui::ScopedWindow window( "Instructions:" );
+    ui::BulletText("The first item in the list is the only one that can catch special items!");
+    ui::BulletText("These special items can only be caught and cannot be manually created");
+    ui::BulletText("Click the screen to change the background color");
+    ui::BulletText("Key controls and your mousewheel will change the camera perspective");
+    ui::BulletText("Use the inspector tool to customize your ingredients!");
+  }
 
   // The Object Inspector
   if( selection != nullptr ) {
@@ -127,13 +137,14 @@ void MyApp::update() {
     item_dropper_.dropDown();
     //check location of item relative to the most recent object
     //this allows the player to move their object to other places and still have item drops happen
-    if (item_dropper_.position[1] < mObjects[0].getPosition()[1] - 20) {
+    if (item_dropper_.position[1] < mObjects[0].getPosition()[1] - kDropGap) {
       item_dropper_.shouldDrop = false;
     }
     if (item_dropper_.madeCollision(mObjects[0].getPosition())) {
       item_dropper_.shouldDrop = false;
       vec3 position = item_dropper_.position;
-      ObjectInfo special_item ("cool item", Color( .769f, .545f, 0.349f), position, kTypeSpecial);
+      //adds the item to the list if it is caught
+      ObjectInfo special_item ("cool item", kBlackColor, position, kTypeSpecial);
       mObjects.push_back(special_item);
       selection = &mObjects.back();
     }
