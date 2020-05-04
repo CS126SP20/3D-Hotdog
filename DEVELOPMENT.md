@@ -21,4 +21,8 @@ May 2, 2020: Created an item dropper class and implemented the items to drop aft
 of seconds and also made the drop rate a constant. Currently the items drop relative to the y positions of the
 hot dog. 
 
+May 4, 2020: Implement the functionality of the item dropper and fix bugs where
+the item would just follow the ingredients. Added in sesame seeds as the special item
+and also allowed the user to turn that mode off. 
+
 ---
