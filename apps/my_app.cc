@@ -35,9 +35,9 @@ int kTypeMustard = 2;
 int kTypeRelish = 3;
 int kTypeSpecial = 4;
 
-int kTimeGap = 15;
+int kTimeGap = 5;
 int kDropGap = 20;
-Color kBlackColor( .769f, .545f, 0.349f);
+Color kBlackColor( 0, 0, 0);
 
 MyApp::MyApp() { }
 
@@ -62,6 +62,7 @@ void MyApp::setup() {
   mObjects.push_back(init_bun);
   mObjects.push_back(init_sausage);
   last_time_ = std::chrono::system_clock::now();
+  itemDropMode = true;
 }
 
 void MyApp::update() {
@@ -107,6 +108,8 @@ void MyApp::update() {
     ui::BulletText("Click the screen to change the background color");
     ui::BulletText("Key controls and your mousewheel will change the camera perspective");
     ui::BulletText("Use the inspector tool to customize your ingredients!");
+
+    ui::Checkbox("Yes item drops", &itemDropMode);
   }
 
   // The Object Inspector
@@ -126,7 +129,7 @@ void MyApp::update() {
   }
 
   //drop special item
-  if (time - last_time_ > std::chrono::seconds(kTimeGap)) {
+  if (itemDropMode && (time - last_time_ > std::chrono::seconds(kTimeGap))) {
     last_drop_time_ = std::chrono::system_clock::now();
     last_time_ = time;
     item_dropper_.reset();
@@ -161,6 +164,7 @@ void MyApp::draw() {
   cinder::ObjLoader bun(loadFile(kBun));
   cinder::ObjLoader mustard(loadFile(kMustard));
   cinder::ObjLoader relish(loadFile(kRelish));
+  cinder::ObjLoader sesame(loadFile(kSesame));
 
 
   //set up camera position
@@ -188,7 +192,7 @@ void MyApp::draw() {
     } else if (object.mType == kTypeRelish) {
       gl::Batch::create(relish, shader)->draw();
     } else if (object.mType == kTypeSpecial) {
-      gl::Batch::create(relish, shader)->draw();
+      gl::Batch::create(sesame, shader)->draw();
     }
     //reset the position of the translater
     gl::translate(-object.getPosition());
@@ -205,10 +209,10 @@ void MyApp::drawDropDown() {
   auto shader = gl::getStockShader( lambert );
   shader->bind();
 
-  cinder::ObjLoader relish(loadFile(kRelish));
-  gl::color(Color( .769f, .545f, 0.349f));
+  cinder::ObjLoader sesame(loadFile(kSesame));
+  gl::color(kBlackColor);
   gl::translate(item_dropper_.position);
-  gl::Batch::create(relish, shader)->draw();
+  gl::Batch::create(sesame, shader)->draw();
   gl::translate(-item_dropper_.position);
 }
 
