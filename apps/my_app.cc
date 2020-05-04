@@ -33,6 +33,7 @@ int kTypeBun = 0;
 int kTypeSausage = 1;
 int kTypeMustard = 2;
 int kTypeRelish = 3;
+int kTypeSpecial = 4;
 
 int kTimeGap = 5;
 
@@ -129,6 +130,13 @@ void MyApp::update() {
     if (item_dropper_.position[1] < mObjects[0].getPosition()[1] - 20) {
       item_dropper_.shouldDrop = false;
     }
+    if (item_dropper_.madeCollision(mObjects[0].getPosition())) {
+      item_dropper_.shouldDrop = false;
+      vec3 position = item_dropper_.position;
+      ObjectInfo special_item ("cool item", Color( .769f, .545f, 0.349f), position, kTypeSpecial);
+      mObjects.push_back(special_item);
+      selection = &mObjects.back();
+    }
   }
 
 }
@@ -167,6 +175,8 @@ void MyApp::draw() {
     } else if (object.mType == kTypeMustard) {
       gl::Batch::create(mustard, shader)->draw();
     } else if (object.mType == kTypeRelish) {
+      gl::Batch::create(relish, shader)->draw();
+    } else if (object.mType == kTypeSpecial) {
       gl::Batch::create(relish, shader)->draw();
     }
   }
