@@ -11,13 +11,13 @@
 
 namespace mylibrary {
   ItemDropper::ItemDropper() {
-    position = cinder::vec3(0, 20, 0);
+    position = cinder::vec3(0, 20, 12);
   }
   void ItemDropper::dropDown() {
     position[1] = position[1] - 1;
   }
   void ItemDropper::reset() {
-    position = cinder::vec3(0, 20, 0);
+    position = cinder::vec3(0, 20, 12);
   }
   bool ItemDropper::madeCollision(cinder::vec3 hotdog_pos) {
     //range of about 10 for the length of hotdog

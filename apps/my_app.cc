@@ -179,6 +179,8 @@ void MyApp::draw() {
     } else if (object.mType == kTypeSpecial) {
       gl::Batch::create(relish, shader)->draw();
     }
+    //reset the position of the translater
+    gl::translate(-object.getPosition());
   }
 
   //draw special item if needed
@@ -196,6 +198,7 @@ void MyApp::drawDropDown() {
   gl::color(Color( .769f, .545f, 0.349f));
   gl::translate(item_dropper_.position);
   gl::Batch::create(relish, shader)->draw();
+  gl::translate(-item_dropper_.position);
 }
 
 void MyApp::keyDown(KeyEvent event) {
