@@ -29,14 +29,17 @@ class MyApp : public cinder::app::App {
   void update() override;
   void draw() override;
   void drawDropDown();
+  //lets user rotate/move
   void keyDown(cinder::app::KeyEvent) override;
   void mouseWheel(cinder::app::MouseEvent) override;
+  //change the background color
   void mouseDown(cinder::app::MouseEvent) override;
 
  private:
   float horz, vert, radi;
+  //all controllable ingredients
   std::vector<mylibrary::ObjectInfo>mObjects;
-  cinder::vec2 perspective;
+  //background colors.
   float bgR, bgG, bgB;
   std::chrono::time_point<std::chrono::system_clock> last_time_;
   std::chrono::time_point<std::chrono::system_clock> last_drop_time_;

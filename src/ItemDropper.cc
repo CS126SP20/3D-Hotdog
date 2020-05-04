@@ -19,4 +19,13 @@ namespace mylibrary {
   void ItemDropper::reset() {
     position = cinder::vec3(0, 20, 0);
   }
+  bool ItemDropper::madeCollision(cinder::vec3 hotdog_pos) {
+    //range of about 10 for the length of hotdog
+    if (abs(position[2] - hotdog_pos[2]) < kHotDogLength/2) {
+      if (abs(position[1] - hotdog_pos[1]) < 2) {
+        return true;
+      }
+    }
+    return false;
+  }
   }
