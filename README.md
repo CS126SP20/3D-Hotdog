@@ -10,6 +10,9 @@ layout.
 
 **Dependencies**
 This program uses the [ImGui Cinderblock](https://github.com/simongeilfus/Cinder-ImGui)
+and [OpenGL in Cinder](https://libcinder.org/docs/guides/opengl/index.html)
+To build the project, see [CMake](https://cmake.org/download/)
+
 
 **Getting Started**
 Run cinder-myapp as the target and cinder-myapp as the executible. 
