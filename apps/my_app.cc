@@ -8,9 +8,6 @@
 
 #include "CinderImGui.h"
 #include "cinder/ObjLoader.h"
-#include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/app/Window.h"
 #include "cinder/gl/gl.h"
 
 namespace myapp {
@@ -21,36 +18,28 @@ using namespace std;
 using cinder::app::KeyEvent;
 using mylibrary::ObjectInfo;
 
-int kTypeBun = 0;
-int kTypeSausage = 1;
-int kTypeMustard = 2;
-int kTypeRelish = 3;
-int kTypeSpecial = 4;
-
-int kTimeGap = 5;
-int kDropGap = 20;
-Color kBlackColor( 0, 0, 0);
-
-MyApp::MyApp() { }
+MyApp::MyApp() {}
 
 void MyApp::setup() {
-  //set up gui
+  // set up gui
   ui::initialize();
   cinder::gl::enableDepthWrite();
   cinder::gl::enableDepthRead();
 
-  //set Camera position
-  horz = 5;
-  vert = 5;
-  radi = 5;
+  // set Camera position
+  horz = kInitialCameraPos;
+  vert = kInitialCameraPos;
+  radi = kInitialCameraPos;
 
-  //set up background color
-  bgR = .78f;
-  bgG = .3f;
-  bgB = .3f;
+  // set up background color
+  bgR = .0f;
+  bgG = .0f;
+  bgB = .0f;
 
-  ObjectInfo init_bun("bun", Color( .769f, .545f, 0.349f), vec3( 0.0f , 0.0f , 0.0f), 0);
-  ObjectInfo init_sausage("sausage", Color( .769f, 0.345f, .408f ), vec3( 0.0f , 0.0f , 0.0f), 1);
+  ObjectInfo init_bun("bun", Color(.769f, .545f, 0.349f),
+                      vec3(0.0f, 0.0f, 0.0f), kTypeBun);
+  ObjectInfo init_sausage("sausage", Color(.769f, 0.345f, .408f),
+                          vec3(0.0f, 0.0f, 0.0f), kTypeSausage);
   mObjects.push_back(init_bun);
   mObjects.push_back(init_sausage);
   last_time_ = std::chrono::system_clock::now();
@@ -63,117 +52,126 @@ void MyApp::update() {
   // Our List / Object selector
   static const ObjectInfo* selection = &mObjects[1];
   {
-    ui::ScopedWindow window( "Ingredients" );
+    ui::ScopedWindow window("Ingredients");
 
     // add / remove buttons
-    if( ui::Button( "Add" ) ) {
+    if (ui::Button("Add")) {
       static int objCount = mObjects.size();
       ObjectInfo new_object;
       mObjects.push_back(new_object);
       selection = &mObjects.back();
     }
-    if( selection ) {
+    if (selection) {
       ui::SameLine();
-      if( ui::Button( "Remove" ) ) {
-        auto it = std::find_if( mObjects.begin(), mObjects.end(), [] ( const ObjectInfo& obj ) { return &obj == selection; } );
-        if( it != mObjects.end() ) {
-          mObjects.erase( it );
+      if (ui::Button("Remove")) {
+        auto it = std::find_if(
+            mObjects.begin(), mObjects.end(),
+            [](const ObjectInfo& obj) { return &obj == selection; });
+        if (it != mObjects.end()) {
+          mObjects.erase(it);
           selection = nullptr;
         }
       }
     }
 
     // selectable list
-    ui::ListBoxHeader( "" );
+    ui::ListBoxHeader("");
     int id = 0;
-    for( const auto& object : mObjects ) {
-      if( ui::Selectable( ( object.mName + "###obj_" + std::to_string( ++id ) ).c_str(), selection == &object ) ) {
+    for (const auto& object : mObjects) {
+      if (ui::Selectable(
+              (object.mName + "###obj_" + std::to_string(++id)).c_str(),
+              selection == &object)) {
         selection = &object;
       }
     }
     ui::ListBoxFooter();
   }
   {
-    ui::ScopedWindow window( "Instructions:" );
-    ui::BulletText("The first item in the list is the only one that can catch special items!");
-    ui::BulletText("These special items can only be caught and cannot be manually created");
+    ui::ScopedWindow window("Instructions:");
+    ui::BulletText(
+        "The first item in the list is the only one that can catch special "
+        "items!");
+    ui::BulletText(
+        "These special items can only be caught and cannot be manually "
+        "created");
     ui::BulletText("Click the screen to change the background color");
-    ui::BulletText("Key controls and your mousewheel will change the camera perspective");
+    ui::BulletText(
+        "Key controls and your mousewheel will change the camera perspective");
     ui::BulletText("Use the inspector tool to customize your ingredients!");
 
     ui::Checkbox("Yes item drops", &itemDropMode);
   }
 
-  // The Object Inspector
-  if( selection != nullptr ) {
-    ui::ScopedWindow window( "Inspector" );
+  // The Object Inspector which allows users to customize
+  if (selection != nullptr) {
+    ui::ScopedWindow window("Inspector");
 
-    ObjectInfo* object = (ObjectInfo*) selection;
-    ui::InputText( "Name", &object->mName );
-    ui::ColorEdit3( "Color", &object->mColor[0] );
-    // getter/setters are a bit longer but still possible
+    ObjectInfo* object = (ObjectInfo*)selection;
+    ui::InputText("Name", &object->mName);
+    ui::ColorEdit3("Color", &object->mColor[0]);
     vec3 pos = object->getPosition();
-    if( ui::DragFloat3( "Position", &pos[0] ) ) object->setPosition( pos );
+    if (ui::DragFloat3("Position", &pos[0])) object->setPosition(pos);
     ui::RadioButton("Bun", &object->mType, 0);
     ui::RadioButton("Sausage", &object->mType, 1);
     ui::RadioButton("Mustard", &object->mType, 2);
     ui::RadioButton("Relish", &object->mType, 3);
   }
 
-  //drop special item
+  // drop special item after a certain time
   if (itemDropMode && (time - last_time_ > std::chrono::seconds(kTimeGap))) {
     last_drop_time_ = std::chrono::system_clock::now();
     last_time_ = time;
+    // start with item on top
     item_dropper_.reset();
     item_dropper_.shouldDrop = true;
   }
-  //change positions every couple milliseconds
-  if (item_dropper_.shouldDrop && time - last_drop_time_ > std::chrono::milliseconds(kTimeGap)) {
+  // change position of item dropping every couple milliseconds
+  if (item_dropper_.shouldDrop &&
+      time - last_drop_time_ > std::chrono::milliseconds(kTimeGap)) {
     item_dropper_.dropDown();
-    //check location of item relative to the most recent object
-    //this allows the player to move their object to other places and still have item drops happen
+    // check location of item relative to the most recent object
+    // this allows the player to move their object to other places and still
+    // have item drops happen
     if (item_dropper_.position[1] < mObjects[0].getPosition()[1] - kDropGap) {
       item_dropper_.shouldDrop = false;
     }
+    // if a collision happens, stop the drop
     if (item_dropper_.madeCollision(mObjects[0].getPosition())) {
       item_dropper_.shouldDrop = false;
       vec3 position = item_dropper_.position;
-      //adds the item to the list if it is caught
-      ObjectInfo special_item ("cool item", kBlackColor, position, kTypeSpecial);
+      // adds the item to the list if it is caught
+      ObjectInfo special_item("cool item", kBlackColor, position, kTypeSpecial);
       mObjects.push_back(special_item);
       selection = &mObjects.back();
     }
   }
-
 }
 
 void MyApp::draw() {
-  //clear screen
-  gl::clear( Color( bgR, bgG, bgB ) );
+  // clear screen
+  gl::clear(Color(bgR, bgG, bgB));
 
-  //load files (unable to set variables outside of draw)
+  // load files (unable to set variables outside of draw for some reason)
   cinder::ObjLoader sausage(loadFile(kSausage));
   cinder::ObjLoader bun(loadFile(kBun));
   cinder::ObjLoader mustard(loadFile(kMustard));
   cinder::ObjLoader relish(loadFile(kRelish));
   cinder::ObjLoader sesame(loadFile(kSesame));
 
-
-  //set up camera position
+  // set up camera position
   CameraPersp cam;
-  cam.lookAt( vec3(radi, vert, horz), vec3( 0, 0, 0 ) );
-  gl::setMatrices( cam );
+  cam.lookAt(vec3(radi, vert, horz), vec3(0, 0, 0));
+  gl::setMatrices(cam);
 
-  //set up shading
+  // set up shading
   auto lambert = gl::ShaderDef().lambert().color();
-  auto shader = gl::getStockShader( lambert );
+  auto shader = gl::getStockShader(lambert);
   shader->bind();
-
 
   // render all ingredients
   gl::ScopedBlendAlpha alphaBlending;
-  for( auto object : mObjects ) {
-    gl::color( object.mColor );
+  for (auto object : mObjects) {
+    gl::color(object.mColor);
     gl::translate(object.getPosition());
     if (object.mType == kTypeSausage) {
       gl::Batch::create(sausage, shader)->draw();
@@ -186,19 +184,20 @@ void MyApp::draw() {
     } else if (object.mType == kTypeSpecial) {
       gl::Batch::create(sesame, shader)->draw();
     }
-    //reset the position of the translater
+    // reset the position of the OoenGL translater
     gl::translate(-object.getPosition());
   }
 
-  //draw special item if needed
+  // draw special item if needed
   if (item_dropper_.shouldDrop) {
     drawDropDown();
   }
-
 }
 void MyApp::drawDropDown() {
+  // draw the special item that is dropped down from the sky
+  // generally, this will be a black sesame seed so it can be hard coded
   auto lambert = gl::ShaderDef().lambert().color();
-  auto shader = gl::getStockShader( lambert );
+  auto shader = gl::getStockShader(lambert);
   shader->bind();
 
   cinder::ObjLoader sesame(loadFile(kSesame));
@@ -226,7 +225,6 @@ void MyApp::keyDown(KeyEvent event) {
       horz = horz + kStep;
       break;
     }
-
   }
 }
 void MyApp::mouseWheel(MouseEvent event) {
@@ -239,8 +237,9 @@ void MyApp::mouseWheel(MouseEvent event) {
 }
 
 void MyApp::mouseDown(MouseEvent event) {
-  bgR = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-  bgG = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-  bgB = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+  // changes the background color
+  bgR = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  bgG = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  bgB = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 }
 }  // namespace myapp

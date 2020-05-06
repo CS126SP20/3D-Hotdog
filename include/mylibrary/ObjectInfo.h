@@ -11,18 +11,17 @@
 #include <vector>
 namespace mylibrary {
 struct ObjectInfo {
-  ObjectInfo(std::string name, cinder::Color color, cinder::vec3 position, int type);
+  ObjectInfo(std::string name, cinder::Color color, cinder::vec3 position,
+             int type);
   ObjectInfo();
-  std::string	mName;
-  cinder::Color	mColor;
-  cinder::vec3	mPosition;
+  std::string mName;
+  cinder::Color mColor;
+  cinder::vec3 mPosition;
   int mType;
   cinder::vec3 getPosition() const { return mPosition; }
-  void setPosition( const ci::vec3 & position ) { mPosition = position; }
-
+  void setPosition(const ci::vec3& position) { mPosition = position; }
 };
 
-}  // namespace objectloader
+}  // namespace mylibrary
 
-
-#endif // FINALPROJECT_MYLIBRARY_EXAMPLE_H_
+#endif  // FINALPROJECT_MYLIBRARY_EXAMPLE_H_
