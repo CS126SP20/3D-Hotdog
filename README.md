@@ -16,7 +16,7 @@ The program starts with a sausage and bun and also has 3 ImGui windows for users
 - This program uses the [ImGui Cinderblock](https://github.com/simongeilfus/Cinder-ImGui)
 - [OpenGL in Cinder](https://libcinder.org/docs/guides/opengl/index.html)
 - To build the project, see [CMake](https://cmake.org/download/)
-- **MacOS** : Clion IDE used to develop and run found [here](https://www.jetbrains.com/clion/download/#section=mac)
+- **MacOS** : CLion IDE used to develop and run found [here](https://www.jetbrains.com/clion/download/#section=mac)
 
 ## Getting Started
 - Download [Cinder](https://libcinder.org/download)
@@ -28,4 +28,4 @@ The program starts with a sausage and bun and also has 3 ImGui windows for users
 Edit configurations -> Executable -> Select Other -> Find my-projects/cinder-myapp/cmake-build-debug/Debug/cinder-myapp/Contents/MacOS/cinder-myapp
 
 
-**Author**: Angela Luo - [`example@illinois.edu`](mailto:angelal6@illinois.edu)
+**Author**: Angela Luo - [`angelal6@illinois.edu`](mailto:angelal6@illinois.edu)
