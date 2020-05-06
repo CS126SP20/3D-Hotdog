@@ -10,8 +10,7 @@
 #include <string>
 #include <vector>
 namespace mylibrary {
-class ObjectInfo {
- public:
+struct ObjectInfo {
   ObjectInfo(std::string name, cinder::Color color, cinder::vec3 position, int type);
   ObjectInfo();
   std::string	mName;

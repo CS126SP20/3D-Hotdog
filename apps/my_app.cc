@@ -12,14 +12,6 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/app/Window.h"
 #include "cinder/gl/gl.h"
-// TODO:
-/**
- *
- * Moving object 0 makes everything move?
- * add better key navigation
- * change colors on hotdog and toppings
- * add option for resizing.
- */
 
 namespace myapp {
 using namespace ci;
