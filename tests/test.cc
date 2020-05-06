@@ -8,11 +8,6 @@
 
 #include <catch2/catch.hpp>
 
-TEST_CASE("Random sanity test", "[random]") {
-  const float random = cinder::randFloat();
-  REQUIRE(0. <= random);
-  REQUIRE(random <= 1.);
-}
 TEST_CASE("ObjectInfo updates location correctly", "[object-info]") {
   mylibrary::ObjectInfo object_info;
   cinder::vec3 new_position (2, 3, 1);
@@ -24,4 +19,17 @@ TEST_CASE("ObjectInfo constructor stores information correctly", "[object-info][
   cinder::Color expected_color( .5f, .5f, 0.5f);
   REQUIRE(object_info.mName == "cool name");
   REQUIRE(object_info.mColor== expected_color);
+}
+TEST_CASE("Item Dropper moves object down", "[item-dropper]") {
+  mylibrary::ItemDropper item_dropper;
+  item_dropper.dropDown();
+  REQUIRE(item_dropper.position[1] == 19);
+}
+TEST_CASE("Item Dropper resets position", "[item-dropper]") {
+  mylibrary::ItemDropper item_dropper;
+  item_dropper.dropDown();
+  item_dropper.dropDown();
+  item_dropper.dropDown();
+  item_dropper.reset();
+  REQUIRE(item_dropper.position[1] == 20);
 }

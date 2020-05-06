@@ -37,5 +37,6 @@ class ItemDropper {
   bool madeCollision(cinder::vec3 hotdog_pos);
  private:
   int kHotDogLength = 14;
+  int kHeightAbove = 20;
 };
 }
