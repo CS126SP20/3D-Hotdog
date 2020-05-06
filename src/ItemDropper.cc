@@ -22,8 +22,10 @@ namespace mylibrary {
   bool ItemDropper::madeCollision(cinder::vec3 hotdog_pos) {
     //range of about 10 for the length of hotdog
     if (abs(position[2] - hotdog_pos[2]) < kHotDogLength/2) {
-      if (abs(position[1] - hotdog_pos[1]) < 4) {
-        return true;
+      if (abs(position[1] - hotdog_pos[1]) < kHotDogLength/3) {
+        if (abs(position[0] - hotdog_pos[0]) < kHotDogLength/3) {
+          return true;
+        }
       }
     }
     return false;

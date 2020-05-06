@@ -33,3 +33,31 @@ TEST_CASE("Item Dropper resets position", "[item-dropper]") {
   item_dropper.reset();
   REQUIRE(item_dropper.position[1] == 20);
 }
+TEST_CASE("Item Dropper recognizes collision", "[item-dropper]") {
+  mylibrary::ItemDropper item_dropper;
+  item_dropper.dropDown();
+  item_dropper.dropDown();
+  cinder::vec3 hotdog_position (0, 18, 1);
+  REQUIRE(item_dropper.madeCollision(hotdog_position));
+}
+TEST_CASE("Item Dropper does not collide with far away hotdog vertically", "[item-dropper]") {
+  mylibrary::ItemDropper item_dropper;
+  item_dropper.dropDown();
+  item_dropper.dropDown();
+  cinder::vec3 hotdog_position (0, 3, 0);
+  REQUIRE(!item_dropper.madeCollision(hotdog_position));
+}
+TEST_CASE("Item Dropper does not collide with far away hotdog horizontally", "[item-dropper]") {
+  mylibrary::ItemDropper item_dropper;
+  item_dropper.dropDown();
+  item_dropper.dropDown();
+  cinder::vec3 hotdog_position (0, 18, 15);
+  REQUIRE(!item_dropper.madeCollision(hotdog_position));
+}
+TEST_CASE("Item Dropper does not collide with far away hotdog x axis horizontally", "[item-dropper]") {
+  mylibrary::ItemDropper item_dropper;
+  item_dropper.dropDown();
+  item_dropper.dropDown();
+  cinder::vec3 hotdog_position (15, 18, 0);
+  REQUIRE(!item_dropper.madeCollision(hotdog_position));
+}
