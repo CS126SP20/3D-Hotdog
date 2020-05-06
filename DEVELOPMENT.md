@@ -25,4 +25,6 @@ May 4, 2020: Implement the functionality of the item dropper and fix bugs where
 the item would just follow the ingredients. Added in sesame seeds as the special item
 and also allowed the user to turn that mode off. 
 
+May 5, 2020: Added testing for all of my classes. Also restructured some code like making the ObjectLoader public. 
+
 ---
