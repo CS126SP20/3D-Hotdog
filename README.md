@@ -10,7 +10,7 @@ layout.
 - Users can directly customize perspective, location, color, and menu items. 
 
 ## General Flow
-The program starts with a sausage and bun and also has 3 ImGui windows for users to control. The instructions windows details what users can do and also hold the option for users to turn off item drops. The list of ingredients lets users choose which they would like to control. On the inspector panel, users can change object type, color, name, and location. In order to switch the background color, click the mouse. To change your perspective, use the mouse wheel and arrow keys. Each ingredient is stored in a list of Objects that can be added or removed. The .obj files can be viewed in the resources folder. 
+The program starts with a sausage and bun and also has 3 ImGui windows for users to control. The instructions windows details what users can do and also hold the option for users to turn off item drops. The list of ingredients lets users choose which object they would like to control. On the inspector panel, users can change object type, color, name, and location. In order to switch the background color, click the mouse. To change your perspective, use the mouse wheel and arrow keys. Each ingredient is stored in a list of Objects that can be added or removed. The .obj files can be viewed in the resources folder. 
 
 ## Dependencies
 - This program uses the [ImGui Cinderblock](https://github.com/simongeilfus/Cinder-ImGui)
@@ -26,6 +26,7 @@ The program starts with a sausage and bun and also has 3 ImGui windows for users
 ![View on CLion](/images/cinder-myapp.png)
 - On Macbooks, you may get an "error = 13, Permissions", in this case do 
 Edit configurations -> Executable -> Select Other -> Find my-projects/cinder-myapp/cmake-build-debug/Debug/cinder-myapp/Contents/MacOS/cinder-myapp
+- If you would like to expand on ingredients offered, see [Blender](https://www.blender.org/download/) to easily create .obj files
 
 
 **Author**: Angela Luo - [`angelal6@illinois.edu`](mailto:angelal6@illinois.edu)
